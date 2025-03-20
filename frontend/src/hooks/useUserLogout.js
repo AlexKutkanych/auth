@@ -20,7 +20,7 @@ export const useUserLogout = () => {
     if (res?.isSuccess) {
       localStorage.removeItem('user');
       resetAuth();
-      navigate('/');
+      navigate('/sign-in');
     }
   };
 

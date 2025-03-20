@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '../../context/AuthContext';
 import SignIn from '../../pages/SignIn';
 import SignUp from '../../pages/SignUp';
-import HomePage from '../../pages/Home';
+import ProfilePage from '../../pages/ProfilePage';
 import ProtectedRoute from '../../pages/ProtectedRoute';
 
 export default function App() {
@@ -22,10 +22,10 @@ export default function App() {
         <Router>
           <Routes>
             <Route
-              path='/'
+              path='/profile'
               element={
                 <ProtectedRoute user={isLoggedIn}>
-                  <HomePage />
+                  <ProfilePage />
                 </ProtectedRoute>
               }
             />
