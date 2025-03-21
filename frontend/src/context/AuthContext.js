@@ -42,13 +42,15 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const resetAuth = () => setAuth(initialUser);
+  const resetAuth = () => {
+    setAuth(initialUser)
+    localStorage.removeItem('user')
+  };
 
   return (
     <AuthContext.Provider
       value={{
         auth,
-        setAuth,
         resetAuth,
         setUser,
         saveUser,

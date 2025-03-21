@@ -1,5 +1,6 @@
 const User = require('../models/User');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const { jwtDecode } = require('jwt-decode');
 const { handleError } = require('../utils/authErrorHandler');
 
 const createToken = (id) =>
@@ -25,7 +26,6 @@ module.exports = {
           .json({ message: 'Wrong email and/or password!' });
       }
 
-      console.log(process.env.COOKIE_MAX_AGE)
       const token = createToken(user._id);
       res.cookie('jwt', token, {
         httpOnly: true,
@@ -105,6 +105,52 @@ module.exports = {
     } catch (err) {
       const errors = handleError(err);
       res.status(400).json({ errors });
+    }
+  },
+  async googleLogin(req, res) {
+    try {
+      const user = jwtDecode(req.body.credential);
+
+      if (!user || !user?.email_verified) {
+        res.status(400).json({ message: 'Error decoding token' });
+      }
+
+      const userInDB = await User.findOne({ email: user?.email });
+
+      let finalUser;
+
+      if (userInDB) {
+        // Update any necessary information for existing user
+        finalUser = userInDB;
+        finalUser.googleId = user.sub; // Ensure Google ID is up-to-date
+        await finalUser.save();
+      } else {
+        const { name, email, sub: googleId } = user;
+        finalUser = await User.create({
+          username: name,
+          email,
+          password: Math.random().toString().slice(-6),
+          googleId,
+        });
+      }
+
+      const token = createToken(finalUser._id);
+      res.cookie('jwt', token, {
+        httpOnly: true,
+        maxAge: process.env.COOKIE_MAX_AGE * 1000,
+        secure: process.env.NODE_ENV === 'production',
+        signed: true,
+        // sameSite: 'strict',
+      });
+
+      res.status(200).json({
+        status: 'ok',
+        message: 'User successfully logged in!',
+        user: finalUser.toObject(),
+        hasToken: true,
+      });
+    } catch (error) {
+      res.status(400).json({ error, message: 'Error login to google' });
     }
   },
 };

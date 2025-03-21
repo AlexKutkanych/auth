@@ -11,10 +11,13 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import { styled } from '@mui/material/styles';
 import { createUser } from '../../api/auth';
 import { useAuthErrorHandler } from '../../hooks/useAuthErrorHandler';
 import { useAuth } from '../../context/AuthContext';
+import GoogleButton from '../../components/GoogleButton';
+import { useGoogleLogin } from '../../hooks/useGoogleLogin';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -67,6 +70,7 @@ export default function SignUp() {
   const [nameErrorMessage, setNameErrorMessage] = useState('');
 
   const navigate = useNavigate();
+  const { handleGoogleLogin } = useGoogleLogin();
 
   const { errorMessage, authErrorHandler } = useAuthErrorHandler();
 
@@ -201,7 +205,11 @@ export default function SignUp() {
             >
               Sign up
             </Button>
-            <Typography sx={{ '> a': { textDecoration: 'none', color: 'primary.main' } }}>
+            <Divider>OR</Divider>
+            <GoogleButton onSuccess={handleGoogleLogin} />
+            <Typography
+              sx={{ '> a': { textDecoration: 'none', color: 'primary.main' } }}
+            >
               Have an account? <NavLink to={'/sign-in'}>Sign in</NavLink>
             </Typography>
           </Box>

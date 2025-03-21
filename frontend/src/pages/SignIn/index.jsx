@@ -11,10 +11,13 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import { styled } from '@mui/material/styles';
 import { loginUser } from '../../api/auth';
+import GoogleButton from '../../components/GoogleButton';
 import { useAuthErrorHandler } from '../../hooks/useAuthErrorHandler';
 import { useAuth } from '../../context/AuthContext';
+import { useGoogleLogin } from '../../hooks/useGoogleLogin';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -66,10 +69,11 @@ export default function SignIn() {
 
   const navigate = useNavigate();
   const { handleSuccessLogin } = useAuth();
+  const { handleGoogleLogin } = useGoogleLogin()
 
   const { errorMessage, authErrorHandler } = useAuthErrorHandler();
 
-  const mutation = useMutation({
+  const loginMutation = useMutation({
     mutationFn: loginUser,
     onSuccess: handleSuccessLogin(navigate),
     onError: authErrorHandler,
@@ -82,7 +86,7 @@ export default function SignIn() {
     }
     const data = new FormData(event.currentTarget);
 
-    mutation.mutate({
+    loginMutation.mutate({
       email: data.get('email'),
       password: data.get('password'),
     });
@@ -181,7 +185,11 @@ export default function SignIn() {
             >
               Sign in
             </Button>
-            <Typography sx={{ '> a': { textDecoration: 'none', color: 'primary.main' } }}>
+            <Divider>OR</Divider>
+            <GoogleButton onSuccess={handleGoogleLogin} />
+            <Typography
+              sx={{ '> a': { textDecoration: 'none', color: 'primary.main' } }}
+            >
               Don't have an account? <NavLink to={'/sign-up'}>Sign up</NavLink>
             </Typography>
           </Box>

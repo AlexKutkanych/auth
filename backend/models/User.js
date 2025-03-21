@@ -18,6 +18,9 @@ const userSchema = new Schema({
     required: [true, 'Please enter a password'],
     minlength: [6, 'Min password length is 6'],
   },
+  googleId: {
+    type: String,
+  },
 });
 
 // fire after document saved to DB

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
-const ProtectedRoute = ({ user, children }) => {
-  if (!user) {
+const ProtectedRoute = ({ children }) => {
+  const { auth } = useAuth();
+  if (!Object.keys(auth?.user).length) {
     return <Navigate to='/sign-up' replace />;
   }
 
