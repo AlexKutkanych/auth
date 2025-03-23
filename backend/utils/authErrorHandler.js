@@ -4,6 +4,7 @@ module.exports = {
       username: '',
       email: '',
       password: '',
+      otp: ''
     };
 
     if (err.message === 'incorrect email') {
@@ -12,6 +13,10 @@ module.exports = {
 
     if (err.message === 'incorrect password') {
       errors.password = 'Incorrect password!';
+    }
+
+    if (err.message === 'incorrect otp') {
+      errors.otp = 'Incorrect OTP!';
     }
 
     // unique field validation through err.code

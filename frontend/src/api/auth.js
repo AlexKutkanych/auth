@@ -11,6 +11,16 @@ export const loginUser = async (body) => {
   return response.data;
 };
 
+export const loginUserWithOTP = async (body) => {
+  const response = await apiClient.post(AUTH_API_ROUTES.LOGIN_WITH_OTP, body);
+  return response.data;
+};
+
+export const verifyOTP = async (body) => {
+  const response = await apiClient.post(AUTH_API_ROUTES.VERIFY_OTP, body);
+  return response.data;
+};
+
 export const googleLoginUser = async (body) => {
   const response = await apiClient.post(AUTH_API_ROUTES.GOOGLE_LOGIN, body);
   return response.data;

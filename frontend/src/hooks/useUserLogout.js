@@ -17,7 +17,7 @@ export const useUserLogout = () => {
 
   const handleSuccessLogout = () => {
     resetAuth();
-    navigate('/sign-up');
+    navigate('/sign-in');
   };
 
   const handleLogout = async (googleId) => {

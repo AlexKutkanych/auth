@@ -10,8 +10,9 @@ export default function ProfilePage() {
   const { handleLogout } = useUserLogout();
 
   return (
-    <Stack spacing={2} direction={'row'} alignItems='center'>
+    <Stack spacing={2} alignItems='center'>
       <Typography>Hello, {username}</Typography>
+      {googleId ? <Typography>Google ID {googleId}</Typography> : null}
       <Button onClick={() => handleLogout(googleId)}>Logout</Button>
     </Stack>
   );

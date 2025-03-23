@@ -12,6 +12,8 @@ import SignIn from '../../pages/SignIn';
 import SignUp from '../../pages/SignUp';
 import ProfilePage from '../../pages/ProfilePage';
 import ProtectedRoute from '../../pages/ProtectedRoute';
+import SignInOTP from '../../pages/SignInOTP';
+import OTPPage from '../../pages/OTPPage';
 
 export default function App() {
   const queryClient = new QueryClient();
@@ -37,6 +39,18 @@ export default function App() {
               <Route
                 path='/sign-in'
                 element={isLoggedIn ? <Navigate to='/profile' /> : <SignIn />}
+              />
+              <Route
+                path='/sign-in-otp'
+                element={
+                  isLoggedIn ? <Navigate to='/profile' /> : <SignInOTP />
+                }
+              />
+              <Route
+                path='/verify-otp'
+                element={
+                  isLoggedIn ? <Navigate to='/profile' /> : <OTPPage />
+                }
               />
               <Route
                 path='/sign-up'
