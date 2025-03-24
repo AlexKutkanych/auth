@@ -21,30 +21,34 @@ const userSchema = new Schema({
   googleId: {
     type: String,
   },
+  role: {
+    type: String,
+    default: 'user',
+  },
 });
 
 // fire after document saved to DB
 userSchema.pre('save', async function (next) {
   // 'this' refers to User before create & save
-  const salt = await bcrypt.genSalt()
+  const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-userSchema.statics.login = async function(email, password) {
-  const user = await this.findOne({ email })
+userSchema.statics.login = async function (email, password) {
+  const user = await this.findOne({ email });
 
   if (!user) {
-    throw Error('incorrect email')
+    throw Error('incorrect email');
   }
 
-  const auth = await bcrypt.compare(password, user.password)
+  const auth = await bcrypt.compare(password, user.password);
 
   if (auth) {
     return user;
   }
-  throw Error('incorrect password')
-}
+  throw Error('incorrect password');
+};
 
 userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
